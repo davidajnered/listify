@@ -1,0 +1,27 @@
+.listify-wrap form { overflow: hidden; }
+.listify-wrap form#listify-add-action {
+  background: #eee;
+  padding: 10px;
+  border-radius: 5px;
+}
+.listify-wrap .element { margin-bottom: 10px; }
+.listify-wrap .list-element { float: left; }
+.listify-wrap .list-element label { margin-right: 10px; }
+.listify-wrap .list-element select { margin-right: 10px; }
+.listify-wrap .list-element.select { margin: 0px; }
+
+.listify-list { border-collapse: collapse; width: 100%; }
+.listify-list th { background: #eee; }
+.listify-list th,
+.listify-list td { text-align: left; padding: 5px; }
+.listify-list-checkbox { width: 50px; }
+.listify-list-name { padding: 0px 20px; }
+.listify-list .even { background: #eee; }
+
+#listify-delete-list #submit { margin-top: 10px; }
+
+.listify-list-options-form table { border-collapse: collapse; width: 400px; margin-top: 20px; }
+.listify-list-options-form thead { background: #eee; }
+.listify-list-options-form th,
+.listify-list-options-form td { text-align: left; padding: 5px; }
+.listify-list-options-form input[type=text] { width: 100%; }

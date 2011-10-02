@@ -35,38 +35,7 @@
 .listify-list-options-form td { text-align: left; padding: 5px; }
 .listify-list-options-form input[type=text] { width: 100%; }
 
-.chosen { width: 70%; }
-
-.chzn-container { float: left; background: red; }
-
-.chzn-choices { overflow: hidden; }
-.chzn-drop ul li {
-  border: 1px solid #ccc;
-  padding: 3px 5px;
-  margin-right: 10px;
-  border-radius: 3px;
-  float: left;
-  cursor: pointer;
-}
-.chzn-choices .search-field { display: none; }
-.chzn-choices .search-choice {
-  position: relative;
-  cursor: pointer;
-  padding: 3px 5px;
-  background: #eee;
-  border-radius: 3px;
-  float: left;
-  margin-right: 10px;
-}
-.chzn-choices .search-choice span { color: #333; float: left; }
-.chzn-choices .search-choice a {
-  position: relative;
-  top: 3px;
-  right: -10px;
-  display: block;
-  height: 10px;
-  width: 10px;
-  background: #333;
-  border-radius: 5px;
-  float: left;
-}
+.blogs-wrapper { overflow: hidden; }
+.blogs-wrapper label { width: auto !important; }
+.blogs-wrapper label span {}
+.blogs-wrapper input[type=checkbox] { margin-right: 5px; }

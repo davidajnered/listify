@@ -37,13 +37,13 @@ function listify_admin_page() { ?>
         </select>
       </div>
       <div class="list-element element">
-        <label for="list_from">Select the blogs to collect data from</label>
-        <select class="chosen" name="list_from" multiple="true">
-          <option value="0">All blogs</option>
+        <label>Select the blogs to collect data from</label>
+        <div class="blogs-wrapper">
+          <label><input type="checkbox" name="check-all-blogs" value="0"><span>All Blogs</span></label>
           <?php foreach($blogs as $id => $name): ?>
-            <option name="blogs[]" value="<?php print $id; ?>"><?php print $name; ?></option>
+            <label><input type="checkbox" name="blogs[]" value="<?php print $id; ?>"><span><?php print $name; ?></span></label>
           <?php endforeach; ?>
-        </select>
+        </div>
       </div>
       <div class="list-element element">
         <input type="hidden" name="form_action" value="add_list">
@@ -56,13 +56,13 @@ function listify_admin_page() { ?>
     <table class="listify-list wp-list-table">
       <thead>
         <tr>
-          <th class="listify-list-checkbox"><input name="check-all" type="checkbox"> All</th>
+          <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"> All</th>
           <th class="listify-list-name">Name</th>
           <th class="listify-list-description">Description</th>
           <th class="listify-list-option">Option</th>
         </tr>
       </thead>
-      <tbody id="the-list">
+      <tbody id="list-list">
         <?php
         $lists = get_site_option('listify_lists', array());
         $zebra = 1;
@@ -205,6 +205,5 @@ function multilist_get_list_options($type) {
  */
 function listify_admin_css_and_script(){
   echo '<link rel="stylesheet" type="text/css" href="' . LISTIFY_PATH . '/css/listify-admin.css" />';
-  echo '<script type="text/javascript" src="' . LISTIFY_PATH . '/js/chosen.jquery.min.js"></script>';
 }
 add_action('admin_head', 'listify_admin_css_and_script');

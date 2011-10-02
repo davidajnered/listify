@@ -25,11 +25,11 @@ function listify_admin_page() { ?>
     <h3>Add a list</h3>
     <form id="listify-add-list" method="POST">
       <div class="list-name element">
-        <label for="list_name">List Name</label>
+        <label for="list_name">Give your list a name</label>
         <input type="text" name="list_name">
       </div>
       <div class="list-element element">
-        <label for="list_type">List</label>
+        <label for="list_type">Select what you want to list</label>
         <select name="list_type">
           <option value="posts">Posts</option>
           <option value="pages">Pages</option>
@@ -37,20 +37,12 @@ function listify_admin_page() { ?>
         </select>
       </div>
       <div class="list-element element">
-        <label for="list_from">from</label>
-        <select name="list_from">
+        <label for="list_from">Select the blogs to collect data from</label>
+        <select class="chosen" name="list_from" multiple="true">
           <option value="0">All blogs</option>
           <?php foreach($blogs as $id => $name): ?>
-            <option value="<?php print $id; ?>"><?php print $name; ?></option>
+            <option name="blogs[]" value="<?php print $id; ?>"><?php print $name; ?></option>
           <?php endforeach; ?>
-        </select>
-      </div>
-      <div class="list-element element">
-        <label for="list_order">and order them by</label>
-        <select name="list_order">
-          <option value="date">Date</option>
-          <option value="most-comments">Most Commented</option>
-          <option value="newly-commented">Newly Commented</option>
         </select>
       </div>
       <div class="list-element element">
@@ -80,7 +72,14 @@ function listify_admin_page() { ?>
             <td class="listify-list-name"><?php print $name; ?></td>
             <td class="listify-list-description">
               List <strong><?php print $list['type']; ?></strong>
-              from <strong><?php print $list['from'] == '0' ? 'all blogs' : $blogs[(int)$list['from']]; ?></strong>
+              from <strong>
+              <?php if($list['from'] == '0') {
+                print 'all blogs'; 
+              }
+              else {
+                print $blogs[(int)$list['from']];
+              } ?>
+              </strong>
               and order them by <strong><?php print $list['order']; ?></strong>
             </td>
             <td><a href="<?php print listify_url(FALSE, array('listify_page' => 'option', 'list_name' => $name)); ?>">options</td>
@@ -206,5 +205,6 @@ function multilist_get_list_options($type) {
  */
 function listify_admin_css_and_script(){
   echo '<link rel="stylesheet" type="text/css" href="' . LISTIFY_PATH . '/css/listify-admin.css" />';
+  echo '<script type="text/javascript" src="' . LISTIFY_PATH . '/js/chosen.jquery.min.js"></script>';
 }
 add_action('admin_head', 'listify_admin_css_and_script');

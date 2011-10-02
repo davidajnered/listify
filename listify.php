@@ -32,6 +32,7 @@ add_action('admin_menu', 'listify_menu');
  * Handle form submits and saves valid data to the database.
  */
 function listify_form_handler() {
+  error_log(var_export($_POST, TRUE));
   $valid = listify_validate_submit($_POST);
   if($valid === FALSE) {
     return FALSE;
@@ -41,6 +42,7 @@ function listify_form_handler() {
   
   // add list
   if($valid && $_POST['form_action'] == 'add_list') {
+    error_log(var_export($_POST['list_from'], TRUE));
     $list = array(
       'type'  => $_POST['list_type'],
       'from'  => $_POST['list_from'],
@@ -257,7 +259,7 @@ function listify_widget_init() {
   require_once('includes/listify-widget.php');
   register_widget('listify_widget');
 }
-// add_action('widgets_init', 'listify_widget_init');
+add_action('widgets_init', 'listify_widget_init');
 
 /**
  * Add stylesheets and javascript to head

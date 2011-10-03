@@ -1,13 +1,38 @@
+#add-list-container,
+#delete-list-container { width: 800px; }
+
 #listify-add-list {
   padding: 10px;
 }
-#listify-add-list .element { margin: 10px 0px; overflow: hidden;  }
-#listify-add-list label {
-  width: 300px;
+#listify-add-list .element {
+  margin: 10px 0px;
+  overflow: hidden;
 }
+#listify-add-list label {
+  float: left;
+  width: 200px;
+}
+input[name=list_name],
+select[name=list_type],
 #listify-add-list .blogs-wrapper {
   float: left;
-  margin-top: 10px;
 }
-#listify-add-list .blogs-wrapper label { margin-right: 10px; }
+#listify-add-list .blogs-wrapper { width: 550px; }
+#listify-add-list .blogs-wrapper label { float: left; display: block; width: auto; margin: 0px 10px 5px 0px !important; }
 #listify-add-list .blogs-wrapper label input { margin-right: 3px; }
+
+.listify-list { width: 100%; }
+.listify-list-option a {
+  display: block;
+  height: 20px;
+  width: 10px;
+  padding-left: 10px;
+  background: url(../images/generic.png) center right no-repeat;
+  text-indent: -9999px;
+  cursor: pointer;
+}
+.listify-list-name { width: 150px; }
+#listify-delete-list { padding: 20px; }
+#delete-list-container th { text-align: left; }
+#delete-list-container tr { position: relative; display: block; margin-padding: 5px; }
+#delete-list-container input[type=checkbox] { margin-right: 5px; }

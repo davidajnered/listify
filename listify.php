@@ -166,7 +166,13 @@ function listify($list_name) {
     return FALSE;
   }
   // print or return data ---------------------------------------------------------------------------------------------
-  return listify_list(listify_load_list($list_name));
+  $list = listify_load_list($list_name);
+  $data = listify_list($list);
+  error_log(var_export($list, TRUE));
+  if(function_exists('listify_render_' + $list['type'])) {
+    call_user_func('listify_render_' + $list['type'], $data);
+  }
+  return $data;
 }
 
 /**
@@ -179,8 +185,8 @@ function listify_load_list($list_name) {
     $list = $lists[$list_name];
     $list['list_name'] = $list_name;
     // to make it easier later on, if we want data from all blogs add an array with blog id's here
-    if($list['from'] == '0') {
-      $list['from'] = listify_blogs(TRUE);
+    if($list['blogs'] == '0') {
+      $list['blogs'] = listify_blogs(TRUE);
     }
     return $list;
   }
@@ -197,6 +203,9 @@ function listify_load_options($list_name = FALSE) {
   if($list_name != FALSE) {
     if(!isset($options[$list_name])) {
       return array();
+    }
+    if($option[$list_name]['blogs'] == '0') {
+      
     }
     return $options[$list_name];
   }
@@ -262,17 +271,14 @@ function listify_the_thumbnail($post, $size) {
 
 function listify_the_post($data) {
   call_render_override('post', $data);
-  error_log(var_export('post render', TRUE));
 }
 
 function listify_the_page($data) {
   call_render_override('page', $data);
-  error_log(var_export('page render', TRUE));
 }
 
 function listify_the_comment($data) {
   call_render_override('comment', $data);
-  error_log(var_export('comment render', TRUE));
 }
 
 function call_render_override($type, $data) {

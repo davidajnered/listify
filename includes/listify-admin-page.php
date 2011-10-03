@@ -23,17 +23,17 @@ function listify_admin_page() { ?>
     <div id="icon-options-general" class="icon32"><br></div>
     <h2>Listify</h2>
     <div class="metabox-holder">
-      <div class="postbox-container">
+      <div id="add-list-container" class="postbox-container">
         <div class="postbox">
           <h3>Add a list</h3>
           <div class="inside">
             <form id="listify-add-list" method="post">
               <div class="list-name element">
-                <label for="list_name">Give your list a name</label>
+                <label for="list_name">Give your list a name:</label>
                 <input type="text" name="list_name">
               </div>
               <div class="list-element element">
-                <label for="list_type">Select what you want to list</label>
+                <label for="list_type">Select what you want to list:</label>
                 <select name="list_type">
                   <option value="posts">Posts</option>
                   <option value="pages">Pages</option>
@@ -41,7 +41,7 @@ function listify_admin_page() { ?>
                 </select>
               </div>
               <div class="list-element element">
-                <label>Select the blogs to collect data from</label>
+                <label>Select blogs:</label>
                 <div class="blogs-wrapper">
                   <label><input type="checkbox" name="check-all-blogs" value="0"><span>All Blogs</span></label>
                   <?php foreach($blogs as $id => $name): ?>
@@ -60,17 +60,17 @@ function listify_admin_page() { ?>
     </div>
     
     <div class="metabox-holder">
-      <div class="postbox-container">
+      <div id="delete-list-container" class="postbox-container">
         <div class="postbox">
           <h3>Lists</h3>
           <form id="listify-delete-list" method="post">
             <table class="listify-list wp-list-table">
               <thead>
                 <tr>
-                  <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"> All</th>
+                  <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"></th>
                   <th class="listify-list-name">Name</th>
                   <th class="listify-list-description">Description</th>
-                  <th class="listify-list-option">Option</th>
+                  <th class="listify-list-option"></th>
                 </tr>
               </thead>
               <tbody id="list-list">
@@ -105,9 +105,8 @@ function listify_admin_page() { ?>
                         }
                       } ?>
                       </strong>
-                      and order them by <strong><?php print $list['order']; ?></strong>
                     </td>
-                    <td><a href="<?php print listify_url(FALSE, array('listify_page' => 'option', 'list_name' => $name)); ?>">options</td>
+                    <td class="listify-list-option"><a href="<?php print listify_url(FALSE, array('listify_page' => 'option', 'list_name' => $name)); ?>">options</td>
                   </div>
                 <?php $zebra++; endforeach; ?>
               </tbody>

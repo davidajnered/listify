@@ -1,41 +1,13 @@
 #listify-add-list {
-  overflow: hidden;
-  background: #eee;
   padding: 10px;
-  border-radius: 5px;
-  width: 700px;
 }
-.listify-wrap .element {
+#listify-add-list .element { margin: 10px 0px; overflow: hidden;  }
+#listify-add-list label {
+  width: 300px;
+}
+#listify-add-list .blogs-wrapper {
   float: left;
-  clear: both;
-  margin-bottom: 10px;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 3px;
-  width: 680px;
-  padding: 10px;
+  margin-top: 10px;
 }
-.listify-wrap .element label { margin-right: 10px; float: left; width: 150px; }
-.listify-wrap .list-element select { margin-right: 10px; }
-.listify-wrap .list-element.select { margin: 0px; }
-
-.listify-list { border-collapse: collapse; width: 100%; }
-.listify-list th { background: #eee; }
-.listify-list th,
-.listify-list td { text-align: left; padding: 5px; }
-.listify-list-checkbox { width: 50px; }
-.listify-list-name { padding: 0px 20px; }
-.listify-list .even { background: #eee; }
-
-#listify-delete-list #submit { margin-top: 10px; }
-
-.listify-list-options-form table { border-collapse: collapse; width: 400px; margin-top: 20px; }
-.listify-list-options-form thead { background: #eee; }
-.listify-list-options-form th,
-.listify-list-options-form td { text-align: left; padding: 5px; }
-.listify-list-options-form input[type=text] { width: 100%; }
-
-.blogs-wrapper { overflow: hidden; }
-.blogs-wrapper label { width: auto !important; }
-.blogs-wrapper label span {}
-.blogs-wrapper input[type=checkbox] { margin-right: 5px; }
+#listify-add-list .blogs-wrapper label { margin-right: 10px; }
+#listify-add-list .blogs-wrapper label input { margin-right: 3px; }

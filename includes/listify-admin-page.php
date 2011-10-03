@@ -22,89 +22,103 @@ function listify_admin_page() { ?>
   <div class="wrap listify-wrap">
     <div id="icon-options-general" class="icon32"><br></div>
     <h2>Listify</h2>
-    <h3>Add a list</h3>
-    <form id="listify-add-list" method="POST">
-      <div class="list-name element">
-        <label for="list_name">Give your list a name</label>
-        <input type="text" name="list_name">
-      </div>
-      <div class="list-element element">
-        <label for="list_type">Select what you want to list</label>
-        <select name="list_type">
-          <option value="posts">Posts</option>
-          <option value="pages">Pages</option>
-          <option value="comments">Comments</option>
-        </select>
-      </div>
-      <div class="list-element element">
-        <label>Select the blogs to collect data from</label>
-        <div class="blogs-wrapper">
-          <label><input type="checkbox" name="check-all-blogs" value="0"><span>All Blogs</span></label>
-          <?php foreach($blogs as $id => $name): ?>
-            <label><input type="checkbox" name="blogs[]" value="<?php print $id; ?>"><span><?php print $name; ?></span></label>
-          <?php endforeach; ?>
+    <div class="metabox-holder">
+      <div class="postbox-container">
+        <div class="postbox">
+          <h3>Add a list</h3>
+          <div class="inside">
+            <form id="listify-add-list" method="post">
+              <div class="list-name element">
+                <label for="list_name">Give your list a name</label>
+                <input type="text" name="list_name">
+              </div>
+              <div class="list-element element">
+                <label for="list_type">Select what you want to list</label>
+                <select name="list_type">
+                  <option value="posts">Posts</option>
+                  <option value="pages">Pages</option>
+                  <option value="comments">Comments</option>
+                </select>
+              </div>
+              <div class="list-element element">
+                <label>Select the blogs to collect data from</label>
+                <div class="blogs-wrapper">
+                  <label><input type="checkbox" name="check-all-blogs" value="0"><span>All Blogs</span></label>
+                  <?php foreach($blogs as $id => $name): ?>
+                    <label><input type="checkbox" name="blogs[]" value="<?php print $id; ?>"><span><?php print $name; ?></span></label>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+              <div class="list-element element">
+                <input type="hidden" name="form-action" value="add-list">
+                <input type="submit" name="submit" id="submit" class="button-primary" value="Add List">
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-      <div class="list-element element">
-        <input type="hidden" name="form-action" value="add-list">
-        <input type="submit" name="submit" id="submit" class="button-primary" value="Add List">
+    </div>
+    
+    <div class="metabox-holder">
+      <div class="postbox-container">
+        <div class="postbox">
+          <h3>Lists</h3>
+          <form id="listify-delete-list" method="post">
+            <table class="listify-list wp-list-table">
+              <thead>
+                <tr>
+                  <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"> All</th>
+                  <th class="listify-list-name">Name</th>
+                  <th class="listify-list-description">Description</th>
+                  <th class="listify-list-option">Option</th>
+                </tr>
+              </thead>
+              <tbody id="list-list">
+                <?php
+                $lists = get_site_option('listify_lists', array());
+                $zebra = 1;
+                foreach($lists as $name => $list): ?>
+                  <tr class="list<?php print ($zebra % 2 == 0) ? ' even' : ' odd'; ?>">
+                    <td class="listify-list-checkbox"><input type="checkbox" name="lists[]" value="<?php print $name; ?>"></td>
+                    <td class="listify-list-name"><?php print $name; ?></td>
+                    <td class="listify-list-description">
+                      List <strong><?php print $list['type']; ?></strong>
+                      from <strong>
+                      <?php if($list['blogs'] == '0' || in_array(0, $list['blogs'])) {
+                        print 'all blogs'; 
+                      }
+                      else {
+                        $blogs = listify_blogs();
+                        if(is_array($list['blogs'])) {
+                          $counter = 0;
+                          foreach($list['blogs'] as $id) {
+                            $sep = ($counter != 0) ? ', ': '';
+                            $sep = ($counter != count($list['blogs']) - 1) ? ', ' : '';
+                            $blog_info = listify_blog_information($id);
+                            print $blog_info['name'];
+                            print $sep;
+                            $counter++;
+                          }
+                        }
+                        else {
+                          print $blogs[(int)$list['from']];
+                        }
+                      } ?>
+                      </strong>
+                      and order them by <strong><?php print $list['order']; ?></strong>
+                    </td>
+                    <td><a href="<?php print listify_url(FALSE, array('listify_page' => 'option', 'list_name' => $name)); ?>">options</td>
+                  </div>
+                <?php $zebra++; endforeach; ?>
+              </tbody>
+            </table>
+            <input type="hidden" name="form-action" value="delete-list">
+            <input type="submit" name="submit" id="submit" class="button-primary" value="Delete List">
+          </form>
+        </div>
       </div>
-    </form>
-
-    <h3>Lists</h3>
-    <form id="listify-delete-list" method="post">
-    <table class="listify-list wp-list-table">
-      <thead>
-        <tr>
-          <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"> All</th>
-          <th class="listify-list-name">Name</th>
-          <th class="listify-list-description">Description</th>
-          <th class="listify-list-option">Option</th>
-        </tr>
-      </thead>
-      <tbody id="list-list">
-        <?php
-        $lists = get_site_option('listify_lists', array());
-        $zebra = 1;
-        foreach($lists as $name => $list): ?>
-          <tr class="list<?php print ($zebra % 2 == 0) ? ' even' : ' odd'; ?>">
-            <td class="listify-list-checkbox"><input type="checkbox" name="lists[]" value="<?php print $name; ?>"></td>
-            <td class="listify-list-name"><?php print $name; ?></td>
-            <td class="listify-list-description">
-              List <strong><?php print $list['type']; ?></strong>
-              from <strong>
-              <?php if($list['blogs'] == '0' || in_array(0, $list['blogs'])) {
-                print 'all blogs'; 
-              }
-              else {
-                $blogs = listify_blogs();
-                if(is_array($list['blogs'])) {
-                  $counter = 0;
-                  foreach($list['blogs'] as $id) {
-                    $sep = ($counter != 0) ? ', ': '';
-                    $sep = ($counter != count($list['blogs']) - 1) ? ', ' : '';
-                    $blog_info = listify_blog_information($id);
-                    print $blog_info['name'];
-                    print $sep;
-                    $counter++;
-                  }
-                }
-                else {
-                  print $blogs[(int)$list['from']];
-                }
-              } ?>
-              </strong>
-              and order them by <strong><?php print $list['order']; ?></strong>
-            </td>
-            <td><a href="<?php print listify_url(FALSE, array('listify_page' => 'option', 'list_name' => $name)); ?>">options</td>
-          </div>
-        <?php $zebra++; endforeach; ?>
-      </tbody>
-    </table>
-    <input type="hidden" name="form-action" value="delete-list">
-    <input type="submit" name="submit" id="submit" class="button-primary" value="Delete List">
-  </form>
-
+    </div>
+  </div>
 <?php
 }
 

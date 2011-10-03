@@ -3,7 +3,7 @@
   background: #eee;
   padding: 10px;
   border-radius: 5px;
-  width: 80%;
+  width: 700px;
 }
 .listify-wrap .element {
   float: left;
@@ -12,11 +12,11 @@
   overflow: hidden;
   background: #fff;
   border-radius: 3px;
-  width: 90%;
-  padding: 10px 10px 10px 50px;
+  width: 680px;
+  padding: 10px;
 }
 .listify-wrap .element label { margin-right: 10px; float: left; width: 150px; }
-.listify-wrap .list-element select { margin-right: 10px; -webkit-appearance: textfield; }
+.listify-wrap .list-element select { margin-right: 10px; }
 .listify-wrap .list-element.select { margin: 0px; }
 
 .listify-list { border-collapse: collapse; width: 100%; }

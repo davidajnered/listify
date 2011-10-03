@@ -46,7 +46,7 @@ function listify_admin_page() { ?>
         </div>
       </div>
       <div class="list-element element">
-        <input type="hidden" name="form_action" value="add_list">
+        <input type="hidden" name="form-action" value="add-list">
         <input type="submit" name="submit" id="submit" class="button-primary" value="Add List">
       </div>
     </form>
@@ -73,11 +73,25 @@ function listify_admin_page() { ?>
             <td class="listify-list-description">
               List <strong><?php print $list['type']; ?></strong>
               from <strong>
-              <?php if($list['from'] == '0') {
+              <?php if($list['blogs'] == '0' || in_array(0, $list['blogs'])) {
                 print 'all blogs'; 
               }
               else {
-                print $blogs[(int)$list['from']];
+                $blogs = listify_blogs();
+                if(is_array($list['blogs'])) {
+                  $counter = 0;
+                  foreach($list['blogs'] as $id) {
+                    $sep = ($counter != 0) ? ', ': '';
+                    $sep = ($counter != count($list['blogs']) - 1) ? ', ' : '';
+                    $blog_info = listify_blog_information($id);
+                    print $blog_info['name'];
+                    print $sep;
+                    $counter++;
+                  }
+                }
+                else {
+                  print $blogs[(int)$list['from']];
+                }
               } ?>
               </strong>
               and order them by <strong><?php print $list['order']; ?></strong>
@@ -87,7 +101,7 @@ function listify_admin_page() { ?>
         <?php $zebra++; endforeach; ?>
       </tbody>
     </table>
-    <input type="hidden" name="form_action" value="delete_list">
+    <input type="hidden" name="form-action" value="delete-list">
     <input type="submit" name="submit" id="submit" class="button-primary" value="Delete List">
   </form>
 
@@ -129,8 +143,8 @@ function listify_list_option_page() { ?>
             </tr>
           <?php endforeach; ?>
           <tr><td>
-          <input type="hidden" name="list_name" value="<?php print $list_name; ?>">
-          <input type="hidden" name="form_action" value="update_list_option">
+          <input type="hidden" name="list-name" value="<?php print $list_name; ?>">
+          <input type="hidden" name="form-action" value="update-list-option">
           <input type="submit" name="submit" id="submit" class="button-primary" value="Save">
           </td></tr>
         </tbody>

@@ -32,7 +32,6 @@ add_action('admin_menu', 'listify_menu');
  * Handle form submits and saves valid data to the database.
  */
 function listify_form_handler() {
-  error_log(var_export($_POST, TRUE));
   $valid = listify_validate_submit($_POST);
   if($valid === FALSE) {
     return FALSE;
@@ -41,19 +40,18 @@ function listify_form_handler() {
   $lists = get_site_option('listify_lists', array());
   
   // add list
-  if($valid && $_POST['form_action'] == 'add_list') {
-    error_log(var_export($_POST['list_from'], TRUE));
+  if($valid && $_POST['form-action'] == 'add-list') {
+    $blogs = ($_POST['check-all-blogs'] == '0') ? 0 : $_POST['blogs'];
     $list = array(
       'type'  => $_POST['list_type'],
-      'from'  => $_POST['list_from'],
-      'order' => $_POST['list_order'],
+      'blogs'  => $blogs,
     );
     $lists[$_POST['list_name']] = $list;
     update_site_option('listify_lists', $lists);
   }
 
   // delete list
-  if($valid && $_POST['form_action'] == 'delete_list') {
+  if($valid && $_POST['form-action'] == 'delete-list') {
     foreach($_POST['lists'] as $key => $list) {
       unset($lists[$list]);
     }
@@ -61,7 +59,7 @@ function listify_form_handler() {
   }
   
   // update list option
-  if($valid && $_POST['form_action'] == 'update_list_option') {
+  if($valid && $_POST['form-action'] == 'update-list-option') {
     $list = $_POST['list_name'];
     $options = listify_load_options();
 
@@ -73,7 +71,7 @@ function listify_form_handler() {
 
     // unset the things we don't need
     unset($updated_options['submit']);
-    unset($updated_options['form_action']);
+    unset($updated_options['form-action']);
     unset($updated_options['list_name']);
     $options[$list] = $updated_options;
 
@@ -86,14 +84,14 @@ function listify_form_handler() {
  * Form submit validation checks the submitted values and sets an error if needed
  */
 function listify_validate_submit($data) {
-  if(isset($_POST) && isset($_POST['form_action'])) {
-    if($_POST['form_action'] == 'add_list' && $data['list_name'] != '') {
+  if(isset($_POST) && isset($_POST['form-action'])) {
+    if($_POST['form-action'] == 'add-list' && $data['list_name'] != '') {
       return TRUE;
     }
-    if($_POST['form_action'] == 'delete_list' && isset($data['lists'])) {
+    if($_POST['form-action'] == 'delete-list' && isset($data['lists'])) {
       return TRUE;
     }
-    if($_POST['form_action'] == 'update_list_option') {
+    if($_POST['form-action'] == 'update-list-option') {
       return TRUE;
     }
   }
@@ -149,6 +147,15 @@ function listify_blogs($id = FALSE) {
   return $blogs;
 }
 
+function listify_blog_information($id) {
+  $blogs = listify_blogs();
+  foreach($blogs as $key => $blog) {
+    if($blog['id'] == $id) {
+      return $blog;
+    }
+  }
+}
+
 /**
  * This is the function to call from your theme. It starts the process of collecting data to list.
  * @param $list the name of the lists
@@ -158,6 +165,7 @@ function listify($list_name) {
     error_log(var_export('List error!', TRUE));
     return FALSE;
   }
+  // print or return data ---------------------------------------------------------------------------------------------
   return listify_list(listify_load_list($list_name));
 }
 
@@ -188,18 +196,18 @@ function listify_load_options($list_name = FALSE) {
   $options = get_site_option('listify_list_options', array());
   if($list_name != FALSE) {
     if(!isset($options[$list_name])) {
-      return FALSE;
+      return array();
     }
     return $options[$list_name];
   }
-  return $options;
+  return array();
 }
 
 /**
  * This is there the data is collected
  */
 function listify_list($list) {
-  $blogs = $list['from'];
+  $blogs = $list['blogs'];
   $data = array();
   $args = listify_load_options($list['list_name']);
   if(!is_array($blogs)) {
@@ -226,16 +234,16 @@ function listify_list($list) {
  * Remove blogs without posts and add the blog id to the post object for future use.
  */
 function listify_normalize_blog_data($data) {
-  $post_array = array();
+  $data_array = array();
   foreach($data as $id => $blog) {
     if(!empty($blog)) {
       foreach($blog as $post) {
         $post->belongs_to_blog = $id;
-        $post_array[] = $post;
+        $data_array[] = $post;
       }
     }
   }
-  return $post_array;
+  return $data_array;
 }
 
 /**
@@ -250,6 +258,28 @@ function listify_the_thumbnail($post, $size) {
     print '<img src="' . $image[0] . '">';
   }
   restore_current_blog();
+}
+
+function listify_the_post($data) {
+  call_render_override('post', $data);
+  error_log(var_export('post render', TRUE));
+}
+
+function listify_the_page($data) {
+  call_render_override('page', $data);
+  error_log(var_export('page render', TRUE));
+}
+
+function listify_the_comment($data) {
+  call_render_override('comment', $data);
+  error_log(var_export('comment render', TRUE));
+}
+
+function call_render_override($type, $data) {
+  $func = 'listify_' . $type . '_render';
+  if(function_exists($func)) {
+    call_user_func($func, $data);
+  }
 }
 
 /**

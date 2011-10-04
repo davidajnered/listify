@@ -20,7 +20,7 @@ function listify_page_router() {
 function listify_admin_page() { ?>
   <?php $blogs = get_site_option('listify_blog_index', array()); ?>
   <div class="wrap listify-wrap">
-    <div id="icon-options-general" class="icon32"><br></div>
+    <div id="icon-options-general" class="icon-listify"><br></div>
     <h2>Listify</h2>
     <div class="metabox-holder">
       <div id="add-list-container" class="postbox-container">
@@ -64,7 +64,7 @@ function listify_admin_page() { ?>
         <div class="postbox">
           <h3>Lists</h3>
           <form id="listify-delete-list" method="post">
-            <table class="listify-list wp-list-table">
+            <table class="listify-list wp-list-table widefat fixed pages">
               <thead>
                 <tr>
                   <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"></th>
@@ -129,7 +129,7 @@ function listify_list_option_page() { ?>
     $saved_options = listify_load_options($list_name);
   ?>
   <div class="wrap listify-list-wrap">
-    <div id="icon-options-general" class="icon32"><br></div>
+    <div id="icon-options-general" class="icon-listify"><br></div>
     <h2>Options for <?php print $_GET['list_name']; ?></h2>
     <a class="listify-go-back" href="wp-admin/options-general.php?page=listify">&laquo; Back to main page</a>
     <div class="metabox-holder">
@@ -155,7 +155,7 @@ function listify_list_option_page() { ?>
           </div>
     
           <form class="listify-list-options-form" method="post">
-            <table>
+            <table class="listify-option-table wp-list-table widefat fixed pages">
               <thead>
                 <tr>
                   <th class="listify-option-form-name">Name</th>
@@ -173,13 +173,11 @@ function listify_list_option_page() { ?>
                     </td>
                   </tr>
                 <?php endforeach; ?>
-                <tr><td>
-                <input type="hidden" name="list-name" value="<?php print $list_name; ?>">
-                <input type="hidden" name="form_action" value="update-list-option">
-                <input type="submit" name="submit" id="submit" class="button-primary" value="Update Options">
-                </td></tr>
               </tbody>
             </table>
+            <input type="hidden" name="list-name" value="<?php print $list_name; ?>">
+            <input type="hidden" name="form_action" value="update-list-option">
+            <input type="submit" name="submit" id="submit" class="button-primary" value="Update Options">
           </form>
 
         </div>

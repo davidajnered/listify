@@ -2,6 +2,23 @@
 #delete-list-container { width: 800px; }
 input[type=submit] { margin-top: 20px; }
 h3 { cursor: default !important; }
+.icon-listify { float: left; margin: 20px 0px; height: 40px; width: 40px; background: url(../images/listify-icon.png) top left no-repeat !important; }
+h2 { float: left; padding: 24px 10px 0px !important; }
+
+/* tables */
+thead tr {
+  background-color: #f1f1f1;
+  background-image: -ms-linear-gradient(top,#f9f9f9,#ececec);
+  background-image: -moz-linear-gradient(top,#f9f9f9,#ececec);
+  background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
+  background-image: -webkit-linear-gradient(top,#f9f9f9,#ececec);
+  background-image: linear-gradient(top,#f9f9f9,#ececec);
+}
+th {
+  font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+  font-weight: normal;
+}
 
 /* Add form */
 #listify-add-list {
@@ -35,17 +52,26 @@ select[name=list_type],
   text-indent: -9999px;
   cursor: pointer;
 }
-.listify-go-back {display: block; margin: 10px 0px; }
+#list-list tr:last-child td { border-bottom: 0px; }
+#list-list tr { padding-top: 4px; }
+.listify-list-description { width: 520px; }
+.listify-go-back {display: block; margin: 10px 0px; clear: both; }
 .listify-list-name { width: 150px; }
 #listify-delete-list { padding: 20px; }
 #delete-list-container th { text-align: left; }
-#delete-list-container tr { position: relative; display: block; margin-padding: 5px; }
+#delete-list-container tr { position: relative; display: block; }
 #delete-list-container input[type=checkbox] { margin-right: 5px; }
+.listify-list-checkbox input { margin-left: 8px; }
 
 /* Option form */
+.listify-option-table { width: 500px; }
+.listify-option-table tbody td label { margin-top: 6px; display: block; }
+.listify-option-table tbody td { padding-bottom: 5px; }
+.listify-option-table tbody tr:last-child td { border-bottom: 0px; }
 .listify-option-desc { padding: 10px 14px; line-height: 1.4em; }
 .listify-list-options-form { margin-top: 10px; padding: 10px; }
 .listify-option-form-name { width: 150px; }
+.listify-option-form-value input { width: 350px; }
 
 /* Widget */
 select.listify-widget-list {

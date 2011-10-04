@@ -40,7 +40,7 @@ function listify_form_handler() {
   $lists = get_site_option('listify_lists', array());
   
   // add list
-  if($valid && $_POST['form-action'] == 'add-list') {
+  if($valid && $_POST['form_action'] == 'add-list') {
     $blogs = ($_POST['check-all-blogs'] == '0') ? 0 : $_POST['blogs'];
     $list = array(
       'type'  => $_POST['list_type'],
@@ -51,16 +51,17 @@ function listify_form_handler() {
   }
 
   // delete list
-  if($valid && $_POST['form-action'] == 'delete-list') {
+  if($valid && $_POST['form_action'] == 'delete-list') {
     foreach($_POST['lists'] as $key => $list) {
+      // delete options too -----------------------------------------------------------------
       unset($lists[$list]);
     }
     update_site_option('listify_lists', $lists);
   }
   
   // update list option
-  if($valid && $_POST['form-action'] == 'update-list-option') {
-    $list = $_POST['list_name'];
+  if($valid && $_POST['form_action'] == 'update-list-option') {
+    $list = $_POST['list-name'];
     $options = listify_load_options();
 
     foreach($_POST as $name => $option) {
@@ -71,10 +72,10 @@ function listify_form_handler() {
 
     // unset the things we don't need
     unset($updated_options['submit']);
-    unset($updated_options['form-action']);
-    unset($updated_options['list_name']);
-    $options[$list] = $updated_options;
+    unset($updated_options['form_action']);
+    unset($updated_options['list-name']);
 
+    $options[$list] = $updated_options;
     update_site_option('listify_list_options', $options);
   }
   listify_url(TRUE);
@@ -84,14 +85,14 @@ function listify_form_handler() {
  * Form submit validation checks the submitted values and sets an error if needed
  */
 function listify_validate_submit($data) {
-  if(isset($_POST) && isset($_POST['form-action'])) {
-    if($_POST['form-action'] == 'add-list' && $data['list_name'] != '') {
+  if(isset($_POST) && isset($_POST['form_action'])) {
+    if($_POST['form_action'] == 'add-list' && $data['list_name'] != '') {
       return TRUE;
     }
-    if($_POST['form-action'] == 'delete-list' && isset($data['lists'])) {
+    if($_POST['form_action'] == 'delete-list' && isset($data['lists'])) {
       return TRUE;
     }
-    if($_POST['form-action'] == 'update-list-option') {
+    if($_POST['form_action'] == 'update-list-option') {
       return TRUE;
     }
   }
@@ -160,7 +161,7 @@ function listify_blog_information($id) {
  * This is the function to call from your theme. It starts the process of collecting data to list.
  * @param $list the name of the lists
  */
-function listify($list_name) {
+function listify($list_name, $return = FALSE) {
   if($list_name == '' || listify_load_list($list_name) == FALSE) {
     error_log(var_export('List error!', TRUE));
     return FALSE;
@@ -168,11 +169,15 @@ function listify($list_name) {
   // print or return data ---------------------------------------------------------------------------------------------
   $list = listify_load_list($list_name);
   $data = listify_list($list);
-  error_log(var_export($list, TRUE));
-  if(function_exists('listify_render_' + $list['type'])) {
-    call_user_func('listify_render_' + $list['type'], $data);
+  if($return) {
+    return $data;
   }
-  return $data;
+
+  if(function_exists('listify_output_' . $list['type'])) {
+    call_user_func('listify_output_' . $list['type'], $data);
+  } else {
+    call_user_func('listify_output_' . $list['type'] . '_default', $data);
+  }
 }
 
 /**
@@ -269,23 +274,50 @@ function listify_the_thumbnail($post, $size) {
   restore_current_blog();
 }
 
-function listify_the_post($data) {
-  call_render_override('post', $data);
+function listify_output_posts_default($data) {
+  foreach($data as $d): ?>
+    <div class="listify-post">
+      <h2><?php print $d->post_title; ?></h2>
+      <?php if($d->post_excerpt == ''): ?>
+        <div class="listify-post-content"><?php print $d->post_content; ?></div>
+      <?php else: ?>
+        <div class="listify-post-excerpt"><?php print $d->post_excerpt; ?></div>
+      <?php endif; ?>
+      <div class="listify-post-meta">
+        <div class="listify-post-author"><?php print get_the_author_meta('user_nicename', $d->post_author); ?></div>
+        <div class="listify-post-date"><?php print $d->post_date; ?></div>
+        <div class="listify-post-comments">Comments: <?php print $d->comment_count; ?></div>
+      </div>
+    </div>
+  <?php endforeach;
 }
 
-function listify_the_page($data) {
-  call_render_override('page', $data);
+function listify_output_pages_default($data) {
+  foreach($data as $d): ?>
+    <div class="listify-page">
+      <h2><?php print $d->post_title; ?></h2>
+      <?php if($d->post_excerpt == ''): ?>
+        <div class="listify-page-content"><?php print $d->post_content; ?></div>
+      <?php else: ?>
+        <div class="listify-page-excerpt"><?php print $d->post_excerpt; ?></div>
+      <?php endif; ?>
+      <div class="listify-page-meta">
+        <div class="listify-page-author"><?php print get_the_author_meta('user_nicename', $d->post_author); ?></div>
+        <div class="listify-page-date"><?php print $d->post_date; ?></div>
+        <div class="listify-page-comments">Comments: <?php print $d->comment_count; ?></div>
+      </div>
+    </div>
+  <?php endforeach;
 }
 
-function listify_the_comment($data) {
-  call_render_override('comment', $data);
-}
-
-function call_render_override($type, $data) {
-  $func = 'listify_' . $type . '_render';
-  if(function_exists($func)) {
-    call_user_func($func, $data);
-  }
+function listify_output_comments_default($data) {
+  foreach($data as $d): ?>
+    <div class="listify-comments">
+      <div class="listify-comment-author"><?php print $d->comment_author; ?></div>
+      <div class="listify-date"><?php print $d->comment_date; ?></div>
+      <div class="listify-comment"><?php print $d->comment_content; ?></div>
+    </div>
+  <?php endforeach;
 }
 
 /**

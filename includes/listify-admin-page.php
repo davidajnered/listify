@@ -50,7 +50,7 @@ function listify_admin_page() { ?>
                 </div>
               </div>
               <div class="list-element element">
-                <input type="hidden" name="form-action" value="add-list">
+                <input type="hidden" name="form_action" value="add-list">
                 <input type="submit" name="submit" id="submit" class="button-primary" value="Add List">
               </div>
             </form>
@@ -111,7 +111,7 @@ function listify_admin_page() { ?>
                 <?php $zebra++; endforeach; ?>
               </tbody>
             </table>
-            <input type="hidden" name="form-action" value="delete-list">
+            <input type="hidden" name="form_action" value="delete-list">
             <input type="submit" name="submit" id="submit" class="button-primary" value="Delete List">
           </form>
         </div>
@@ -157,7 +157,7 @@ function listify_list_option_page() { ?>
           <?php endforeach; ?>
           <tr><td>
           <input type="hidden" name="list-name" value="<?php print $list_name; ?>">
-          <input type="hidden" name="form-action" value="update-list-option">
+          <input type="hidden" name="form_action" value="update-list-option">
           <input type="submit" name="submit" id="submit" class="button-primary" value="Save">
           </td></tr>
         </tbody>

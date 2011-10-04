@@ -67,7 +67,7 @@ function listify_admin_page() { ?>
             <table class="listify-list wp-list-table widefat fixed pages">
               <thead>
                 <tr>
-                  <th class="listify-list-checkbox"><input name="check-all-lists" type="checkbox"></th>
+                  <th class="listify-list-checkbox"><input name="check-all-lists" value="0" type="checkbox"></th>
                   <th class="listify-list-name">Name</th>
                   <th class="listify-list-description">Description</th>
                   <th class="listify-list-option"></th>
@@ -76,6 +76,9 @@ function listify_admin_page() { ?>
               <tbody id="list-list">
                 <?php
                 $lists = get_site_option('listify_lists', array());
+                if(empty($lists)): ?>
+                  <tr class="no-list"><td>No lists yet...</td></td>
+                <?php endif;
                 $zebra = 1;
                 foreach($lists as $name => $list): ?>
                   <tr class="list<?php print ($zebra % 2 == 0) ? ' even' : ' odd'; ?>">
@@ -118,9 +121,11 @@ function listify_admin_page() { ?>
       </div>
     </div>
   </div>
-<?php
-}
+<?php listify_credit(); }
 
+/**
+ * Option page
+ */
 function listify_list_option_page() { ?>
   <?php
     $list_name = $_GET['list_name'];
@@ -133,25 +138,26 @@ function listify_list_option_page() { ?>
     <h2>Options for <?php print $_GET['list_name']; ?></h2>
     <a class="listify-go-back" href="wp-admin/options-general.php?page=listify">&laquo; Back to main page</a>
     <div class="metabox-holder">
-      <div id="delete-list-container" class="postbox-container">
+      <div id="option-list-container" class="postbox-container">
         <div class="postbox">
           <h3>Options</h3>
     
           <div class="listify-option-desc">
             <i>The options below are taken from the wordpress codex for the content type you wish to list. Have a look at the codex if you want to know what the fields mean.</i> 
             <?php switch($list['type']) {
-              case 'posts': ?>
-                <a href="http://codex.wordpress.org/Function_Reference/get_posts">Wordpress Codex</a>
-              <?php break;
+              case 'posts':
+                $url = 'http://codex.wordpress.org/Function_Reference/get_posts';
+                break;
       
-              case 'pages': ?>
-                <a href="http://codex.wordpress.org/Function_Reference/get_pages">Wordpress Codex</a>
-              <?php break;
+              case 'pages':
+                $url = 'http://codex.wordpress.org/Function_Reference/get_pages';
+                break;
       
-              case 'comments': ?>
-                <a href="http://codex.wordpress.org/Function_Reference/get_comments">Wordpress Codex</a>
-              <?php break;
+              case 'comments':
+                $url = 'http://codex.wordpress.org/Function_Reference/get_comments';
+                break;
             } ?>
+            <a href="<?php print $url; ?>" target="_blank">Wordpress Codex</a>
           </div>
     
           <form class="listify-list-options-form" method="post">
@@ -184,7 +190,7 @@ function listify_list_option_page() { ?>
       </div>
     </div>
   </div>
-<?php }
+<?php listify_credit(); }
 
 /**
  * options are copied from wordpress codex

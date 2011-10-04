@@ -86,7 +86,7 @@ function listify_form_handler() {
  */
 function listify_validate_submit($data) {
   if(isset($_POST) && isset($_POST['form_action'])) {
-    if($_POST['form_action'] == 'add-list' && $data['list_name'] != '') {
+    if($_POST['form_action'] == 'add-list' && $data['list_name'] != '' && isset($data['blogs'])) {
       return TRUE;
     }
     if($_POST['form_action'] == 'delete-list' && isset($data['lists'])) {
@@ -355,3 +355,9 @@ register_activation_hook(__FILE__, 'listify_activation');
 function listify_deactivation() {
 }
 register_deactivation_hook(__FILE__, 'listify_deactivation');
+
+function listify_credit() { ?>
+  <div class="listify-credit">
+    Plugin created by <a href="http://davidajnered.com">David Ajnered</a>. Design by <a href="http://onetonnegraphic.com">One Tonne Graphic</a>.
+  </div>
+<?php }

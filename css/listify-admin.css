@@ -21,6 +21,7 @@ th {
 }
 
 /* Add form */
+#add-list-container { clear: both; }
 #listify-add-list {
   padding: 10px;
 }
@@ -42,18 +43,21 @@ select[name=list_type],
 #listify-add-list .blogs-wrapper label input { margin-right: 3px; }
 
 /* List/delete form */
+.no-list { padding-bottom: 7px; margin-left: 7px; }
 .listify-list { width: 100%; }
 .listify-list-option a {
   display: block;
   height: 20px;
   width: 10px;
   padding-left: 10px;
+  margin-top: -5px;
   background: url(../images/generic.png) center right no-repeat;
   text-indent: -9999px;
   cursor: pointer;
 }
 #list-list tr:last-child td { border-bottom: 0px; }
 #list-list tr { padding-top: 4px; }
+#list-list tbody tr { padding: 4px 0px 4px; }
 .listify-list-description { width: 520px; }
 .listify-go-back {display: block; margin: 10px 0px; clear: both; }
 .listify-list-name { width: 150px; }
@@ -64,6 +68,7 @@ select[name=list_type],
 .listify-list-checkbox input { margin-left: 8px; }
 
 /* Option form */
+#option-list-container { width: 522px; }
 .listify-option-table { width: 500px; }
 .listify-option-table tbody td label { margin-top: 6px; display: block; }
 .listify-option-table tbody td { padding-bottom: 5px; }
@@ -76,4 +81,8 @@ select[name=list_type],
 /* Widget */
 select.listify-widget-list {
   width: 100%;
+}
+
+.listify-credit {
+  float: left;
 }

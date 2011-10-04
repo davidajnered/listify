@@ -1,6 +1,9 @@
 #add-list-container,
 #delete-list-container { width: 800px; }
+input[type=submit] { margin-top: 20px; }
+h3 { cursor: default !important; }
 
+/* Add form */
 #listify-add-list {
   padding: 10px;
 }
@@ -21,6 +24,7 @@ select[name=list_type],
 #listify-add-list .blogs-wrapper label { float: left; display: block; width: auto; margin: 0px 10px 5px 0px !important; }
 #listify-add-list .blogs-wrapper label input { margin-right: 3px; }
 
+/* List/delete form */
 .listify-list { width: 100%; }
 .listify-list-option a {
   display: block;
@@ -31,8 +35,19 @@ select[name=list_type],
   text-indent: -9999px;
   cursor: pointer;
 }
+.listify-go-back {display: block; margin: 10px 0px; }
 .listify-list-name { width: 150px; }
 #listify-delete-list { padding: 20px; }
 #delete-list-container th { text-align: left; }
 #delete-list-container tr { position: relative; display: block; margin-padding: 5px; }
 #delete-list-container input[type=checkbox] { margin-right: 5px; }
+
+/* Option form */
+.listify-option-desc { padding: 10px 14px; line-height: 1.4em; }
+.listify-list-options-form { margin-top: 10px; padding: 10px; }
+.listify-option-form-name { width: 150px; }
+
+/* Widget */
+select.listify-widget-list {
+  width: 100%;
+}

@@ -184,8 +184,12 @@ function listify($list_name, $return = FALSE) {
  * Return an list from the database
  * @param $list_name the name of the list
  */
-function listify_load_list($list_name) {
+function listify_load_list($list_name = NULL) {
   $lists = get_site_option('listify_lists', array());
+  if($list_name == NULL) {
+    return $lists;
+  }
+
   if(isset($lists[$list_name])) {
     $list = $lists[$list_name];
     $list['list_name'] = $list_name;

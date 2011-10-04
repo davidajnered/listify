@@ -1,14 +1,13 @@
 <?php
 /*
- * Plugin Name: multisite_list Widget
- * Version: 1.0
+ * Plugin Name: Listify Widget
+ * Version: 0001
  * Plugin URI: http://www.davidajnered.com/
  * Description: N/A
  * Author: David Ajnered
  */
 
 class listify_widget extends WP_Widget {
-  private $length;
 
   /**
   * Init method
@@ -25,7 +24,7 @@ class listify_widget extends WP_Widget {
   * Displays the widget
   */
   function widget($args, $instance) {
-    print '<li>Listify</li>';
+    listify($instance['listify-widget-list']);
   }
 
   /**
@@ -33,18 +32,23 @@ class listify_widget extends WP_Widget {
    */
   function update($new_instance, $old_instance) {
     $instance = $old_instance;
-    $instance['widget_title']   = strip_tags(stripslashes($new_instance['widget_title']));
+    $instance['listify-widget-list'] = strip_tags(stripslashes($new_instance['listify-widget-list']));
     return $instance;
   }
 
   /**
    * GUI for backend
    */
-  function form($instance) {
-    /* Print interface */
-    print 'form';
-    // show list of lists
-  }
+  function form($instance) { ?>
+    <select name="<?php echo $this->get_field_name('listify-widget-list'); ?>" id="<?php echo $this->get_field_id('listify-widget-list'); ?>" class="listify-widget-list">
+      <?php $lists = listify_load_list();
+      foreach($lists as $name => $list): ?>
+        <option value="<?php print $name; ?>" <?php print ($name == $instance['listify-widget-list']) ? 'selected' : ''; ?>>
+          <?php print $name; ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+  <?php }
 
 } /* End of class */
 ?>

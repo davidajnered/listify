@@ -51,7 +51,7 @@ function listify_admin_page() { ?>
               </div>
               <div class="list-element element">
                 <input type="hidden" name="form_action" value="add-list">
-                <input type="submit" name="submit" id="submit" class="button-primary" value="Add List">
+                <input type="submit" name="submit" id="submit" class="button-primary" value="Add A New List">
               </div>
             </form>
           </div>
@@ -112,7 +112,7 @@ function listify_admin_page() { ?>
               </tbody>
             </table>
             <input type="hidden" name="form_action" value="delete-list">
-            <input type="submit" name="submit" id="submit" class="button-primary" value="Delete List">
+            <input type="submit" name="submit" id="submit" class="button-primary" value="Delete Selected Lists">
           </form>
         </div>
       </div>
@@ -131,38 +131,60 @@ function listify_list_option_page() { ?>
   <div class="wrap listify-list-wrap">
     <div id="icon-options-general" class="icon32"><br></div>
     <h2>Options for <?php print $_GET['list_name']; ?></h2>
-    <div class="desc">
-    <?php if($list['list_type'] == 'posts'): ?>
-      <a href="http://codex.wordpress.org/Function_Reference/get_posts">Wordpress Codex</a>
-    <?php elseif($list['list_type'] == 'pages'): ?>
-      <a href="http://codex.wordpress.org/Function_Reference/get_pages">Wordpress Codex</a>
-    <?php elseif($list['list_type'] == 'comments'): ?>
-      <a href="http://codex.wordpress.org/Function_Reference/get_comments">Wordpress Codex</a>
-    <?php endif; ?>
+    <a class="listify-go-back" href="wp-admin/options-general.php?page=listify">&laquo; Back to main page</a>
+    <div class="metabox-holder">
+      <div id="delete-list-container" class="postbox-container">
+        <div class="postbox">
+          <h3>Options</h3>
+    
+          <div class="listify-option-desc">
+            <i>The options below are taken from the wordpress codex for the content type you wish to list. Have a look at the codex if you want to know what the fields mean.</i> 
+            <?php switch($list['type']) {
+              case 'posts': ?>
+                <a href="http://codex.wordpress.org/Function_Reference/get_posts">Wordpress Codex</a>
+              <?php break;
+      
+              case 'pages': ?>
+                <a href="http://codex.wordpress.org/Function_Reference/get_pages">Wordpress Codex</a>
+              <?php break;
+      
+              case 'comments': ?>
+                <a href="http://codex.wordpress.org/Function_Reference/get_comments">Wordpress Codex</a>
+              <?php break;
+            } ?>
+          </div>
+    
+          <form class="listify-list-options-form" method="post">
+            <table>
+              <thead>
+                <tr>
+                  <th class="listify-option-form-name">Name</th>
+                  <th class="listify-option-form-value">Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach($options as $name => $default): ?>
+                  <tr>
+                    <td class="listify-option-form-name">
+                      <label for="<?php print $name; ?>"><?php print $name; ?></label>
+                    </td>
+                    <td class="listify-option-form-value">
+                      <input type="text" name="<?php print $name; ?>" value="<?php print isset($saved_options[$name]) ? $saved_options[$name] : ''; ?>" />
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+                <tr><td>
+                <input type="hidden" name="list-name" value="<?php print $list_name; ?>">
+                <input type="hidden" name="form_action" value="update-list-option">
+                <input type="submit" name="submit" id="submit" class="button-primary" value="Update Options">
+                </td></tr>
+              </tbody>
+            </table>
+          </form>
+
+        </div>
+      </div>
     </div>
-    <form class="listify-list-options-form" method="post">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach($options as $name => $default): ?>
-            <tr>
-              <td><label for="<?php print $name; ?>"><?php print $name; ?></label></td>
-              <td><input type="text" name="<?php print $name; ?>" value="<?php print isset($saved_options[$name]) ? $saved_options[$name] : ''; ?>" /></td>
-            </tr>
-          <?php endforeach; ?>
-          <tr><td>
-          <input type="hidden" name="list-name" value="<?php print $list_name; ?>">
-          <input type="hidden" name="form_action" value="update-list-option">
-          <input type="submit" name="submit" id="submit" class="button-primary" value="Save">
-          </td></tr>
-        </tbody>
-      </table>
-    </form>
   </div>
 <?php }
 

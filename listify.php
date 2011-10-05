@@ -181,6 +181,18 @@ function listify($list_name, $return = FALSE) {
 }
 
 /**
+ * Shorttag handler
+ * @param @attr shorttag attributes
+ */
+function listify_shorttag($attr) {
+  extract(shortcode_atts(array(
+    'list' => NULL,
+  ), $attr));
+  listify($attr['list']);
+}
+add_shortcode('listify', 'listify_shorttag');
+
+/**
  * Return an list from the database
  * @param $list_name the name of the list
  */

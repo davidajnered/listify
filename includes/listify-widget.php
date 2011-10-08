@@ -1,13 +1,4 @@
-<?php
-/*
- * Plugin Name: Listify Widget
- * Version: 0001
- * Plugin URI: http://www.davidajnered.com/
- * Description: N/A
- * Author: David Ajnered
- */
-
-class listify_widget extends WP_Widget {
+<?php class listify_widget extends WP_Widget {
 
   /**
   * Init method

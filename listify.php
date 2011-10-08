@@ -175,7 +175,8 @@ function listify($list_name, $return = FALSE) {
 
   if(function_exists('listify_output_' . $list['type'])) {
     call_user_func('listify_output_' . $list['type'], $data);
-  } else {
+  }
+  else {
     call_user_func('listify_output_' . $list['type'] . '_default', $data);
   }
 }
@@ -217,7 +218,8 @@ function listify_load_list($list_name = NULL) {
 }
 
 /**
- *
+ * Load list stored in the database
+ * @param $list_name the name of the list
  */
 function listify_load_options($list_name = FALSE) {
   $options = get_site_option('listify_list_options', array());
@@ -235,6 +237,7 @@ function listify_load_options($list_name = FALSE) {
 
 /**
  * This is there the data is collected
+ * @param $list an array with list data
  */
 function listify_list($list) {
   $blogs = $list['blogs'];
@@ -262,6 +265,7 @@ function listify_list($list) {
 
 /**
  * Remove blogs without posts and add the blog id to the post object for future use.
+ * @param $data array with post, page or comment data
  */
 function listify_normalize_blog_data($data) {
   $data_array = array();
@@ -279,6 +283,8 @@ function listify_normalize_blog_data($data) {
 /**
  * Prints thumbnail for posts. Have to loop through all the blogs to get the image.
  * There's probably a better way to do this.
+ * @param $post post data
+ * @param $size thumbnail size
  */
 function listify_the_thumbnail($post, $size) {
   $blog_id = $post->belongs_to_blog;
@@ -290,6 +296,10 @@ function listify_the_thumbnail($post, $size) {
   restore_current_blog();
 }
 
+/**
+ * Default output for posts
+ * @param $data array with post data
+ */
 function listify_output_posts_default($data) {
   foreach($data as $d): ?>
     <div class="listify-post">
@@ -308,6 +318,10 @@ function listify_output_posts_default($data) {
   <?php endforeach;
 }
 
+/**
+ * Default output for pages
+ * @param $data array with page data
+ */
 function listify_output_pages_default($data) {
   foreach($data as $d): ?>
     <div class="listify-page">
@@ -326,6 +340,10 @@ function listify_output_pages_default($data) {
   <?php endforeach;
 }
 
+/**
+ * Default output for comments
+ * @param $data array with comment data
+ */
 function listify_output_comments_default($data) {
   foreach($data as $d): ?>
     <div class="listify-comments">

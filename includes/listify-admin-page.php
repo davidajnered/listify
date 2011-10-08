@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Rounter function that checks GET parameters to figure out what admin page to load
+ */
 function listify_page_router() {
   if(isset($_GET) && isset($_GET['listify_page'])) {
     $page = $_GET['listify_page'];
@@ -194,6 +197,7 @@ function listify_list_option_page() { ?>
 
 /**
  * options are copied from wordpress codex
+ * @param $type the content type 
  */
 function multilist_get_list_options($type) {
   switch($type) {

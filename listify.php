@@ -443,7 +443,6 @@ add_action('widgets_init', 'listify_widget_init');
  * Add stylesheets and javascript to head
  */
 function listify_css_and_script() {
-  echo '<link rel="stylesheet" type="text/css" href="' . LISTIFY_PATH . '/css/listify.css" />';
   echo '<script type="text/javascript" src="' . LISTIFY_PATH . '/js/listify.js"></script>';
 }
 

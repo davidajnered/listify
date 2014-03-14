@@ -62,6 +62,7 @@ select[name=list_type],
 .listify-go-back {display: block; margin: 10px 0px; clear: both; }
 .listify-list-name { width: 150px; }
 #listify-delete-list { padding: 20px; }
+#listify-delete-list input[type=submit] { margin-top: 20px; }
 #delete-list-container th { text-align: left; }
 #delete-list-container tr { position: relative; display: block; }
 #delete-list-container input[type=checkbox] { margin-right: 5px; }

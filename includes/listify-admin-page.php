@@ -43,15 +43,19 @@ function listify_admin_page() { ?>
                   <option value="comments">Comments</option>
                 </select>
               </div>
-              <div class="list-element element">
-                <label>Select blogs:</label>
-                <div class="blogs-wrapper">
-                  <label><input type="checkbox" name="check-all-blogs" value="0"><span>All Blogs</span></label>
-                  <?php foreach($blogs as $id => $name): ?>
-                    <label><input type="checkbox" name="blogs[]" value="<?php print $id; ?>"><span><?php print $name; ?></span></label>
-                  <?php endforeach; ?>
+
+              <?php if ($blogs): ?>
+                <div class="list-element element">
+                  <label>Select blogs:</label>
+                  <div class="blogs-wrapper">
+                    <label><input type="checkbox" name="check-all-blogs" value="0"><span>All Blogs</span></label>
+                    <?php foreach($blogs as $id => $name): ?>
+                      <label><input type="checkbox" name="blogs[]" value="<?php print $id; ?>"><span><?php print $name; ?></span></label>
+                    <?php endforeach; ?>
+                  </div>
                 </div>
-              </div>
+              <?php endif; ?>
+
               <div class="list-element element">
                 <input type="hidden" name="form_action" value="add-list">
                 <input type="submit" name="submit" id="submit" class="button-primary" value="Add A New List">
@@ -61,7 +65,7 @@ function listify_admin_page() { ?>
         </div>
       </div>
     </div>
-    
+
     <div class="metabox-holder">
       <div id="delete-list-container" class="postbox-container">
         <div class="postbox">
@@ -89,28 +93,31 @@ function listify_admin_page() { ?>
                     <td class="listify-list-name"><?php print $name; ?></td>
                     <td class="listify-list-description">
                       List <strong><?php print $list['type']; ?></strong>
-                      from <strong>
-                      <?php if($list['blogs'] == '0' || in_array(0, $list['blogs'])) {
-                        print 'all blogs'; 
-                      }
-                      else {
-                        $blogs = listify_blogs();
-                        if(is_array($list['blogs'])) {
-                          $counter = 0;
-                          foreach($list['blogs'] as $id) {
-                            $sep = ($counter != 0) ? ', ': '';
-                            $sep = ($counter != count($list['blogs']) - 1) ? ', ' : '';
-                            $blog_info = listify_blog_information($id);
-                            print $blog_info['name'];
-                            print $sep;
-                            $counter++;
-                          }
+
+                      <?php if ($list['blogs']): ?>
+                        from <strong>
+                        <?php if ($list['blogs'] == '0' || in_array(0, $list['blogs'])) {
+                          print 'all blogs';
                         }
                         else {
-                          print $blogs[(int)$list['from']];
-                        }
-                      } ?>
-                      </strong>
+                          $blogs = listify_blogs();
+                          if(is_array($list['blogs'])) {
+                            $counter = 0;
+                            foreach($list['blogs'] as $id) {
+                              $sep = ($counter != 0) ? ', ': '';
+                              $sep = ($counter != count($list['blogs']) - 1) ? ', ' : '';
+                              $blog_info = listify_blog_information($id);
+                              print $blog_info['name'];
+                              print $sep;
+                              $counter++;
+                            }
+                          }
+                          else {
+                            print $blogs[(int)$list['from']];
+                          }
+                        } ?>
+                        </strong>
+                      <?php endif; ?>
                     </td>
                     <td class="listify-list-option"><a href="<?php print listify_url(FALSE, array('listify_page' => 'option', 'list_name' => $name)); ?>">options</td>
                   </div>
@@ -124,7 +131,7 @@ function listify_admin_page() { ?>
       </div>
     </div>
   </div>
-<?php listify_credit(); }
+<?php }
 
 /**
  * Option page
@@ -144,25 +151,25 @@ function listify_list_option_page() { ?>
       <div id="option-list-container" class="postbox-container">
         <div class="postbox">
           <h3>Options</h3>
-    
+
           <div class="listify-option-desc">
-            <i>The options below are taken from the wordpress codex for the content type you wish to list. Have a look at the codex if you want to know what the fields mean.</i> 
+            <i>The options below are taken from the wordpress codex for the content type you wish to list. Have a look at the codex if you want to know what the fields mean.</i>
             <?php switch($list['type']) {
               case 'posts':
                 $url = 'http://codex.wordpress.org/Function_Reference/get_posts';
                 break;
-      
+
               case 'pages':
                 $url = 'http://codex.wordpress.org/Function_Reference/get_pages';
                 break;
-      
+
               case 'comments':
                 $url = 'http://codex.wordpress.org/Function_Reference/get_comments';
                 break;
             } ?>
             <a href="<?php print $url; ?>" target="_blank">Wordpress Codex</a>
           </div>
-    
+
           <form class="listify-list-options-form" method="post">
             <table class="listify-option-table wp-list-table widefat fixed pages">
               <thead>
@@ -193,11 +200,11 @@ function listify_list_option_page() { ?>
       </div>
     </div>
   </div>
-<?php listify_credit(); }
+<?php }
 
 /**
  * options are copied from wordpress codex
- * @param $type the content type 
+ * @param $type the content type
  */
 function multilist_get_list_options($type) {
   switch($type) {
